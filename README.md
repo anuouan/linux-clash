@@ -15,7 +15,7 @@ cd /opt/
 ### 2.1 下载clash
 
 ```bash
-git clone https://github.com/anuouan/linux-clash.git
+git clone https://github.com/anuouan/linux-clash.git && cd linux-clash/ && rm -rf README.md README.assets/ .git/ .gitignore
 ```
 
 <img src="README.assets/image-20241203095625411.png" alt="image-20241203095625411"  />
@@ -25,7 +25,7 @@ git clone https://github.com/anuouan/linux-clash.git
 进入到项目目录，编辑`.env`文件，添加订阅地址`CLASH_URL`的值。
 
 ```bash
-cd linux-clash/
+cd /opt/linux-clash/
 ```
 
 ```bash
@@ -41,7 +41,7 @@ vim .env
 - 进入clash目录
 
 ```bash
-cd linux-clash/
+cd /opt/linux-clash/
 ```
 
 - 运行启动脚本
@@ -102,7 +102,7 @@ env | grep -E 'http_proxy|https_proxy'
 - 进入clash目录
 
 ```bash
-cd linux-clash/
+cd /opt/linux-clash/
 ```
 
 - 关闭服务
