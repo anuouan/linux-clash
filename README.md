@@ -22,7 +22,7 @@ git clone https://github.com/anuouan/linux-clash.git && cd linux-clash/ && rm -r
 
 ### 2.2 配置订阅地址
 
-进入到项目目录，编辑`.env`文件，添加订阅地址`CLASH_URL`的值。
+进入到clash目录，编辑`.env`文件，添加订阅地址`CLASH_URL`的值。
 
 ```bash
 cd /opt/linux-clash/
@@ -47,7 +47,7 @@ cd /opt/linux-clash/
 - 运行启动脚本
 
 ```bash
-sudo bash start.sh
+sudo bash ./start.sh
 ```
 
 ![image-20241203100403956](README.assets/image-20241203100403956.png)
@@ -112,7 +112,7 @@ cd /opt/linux-clash/
 - 关闭服务
 
 ```bash
-sudo bash shutdown.sh
+sudo bash ./shutdown.sh
 ```
 
 ![image-20241203102954776](README.assets/image-20241203102954776.png)
@@ -145,7 +145,7 @@ env | grep -E 'http_proxy|https_proxy'
 
 - 通过地址访问ui界面
 
-  运行`sudo bash start.sh`启动程序后的输出
+  运行`sudo bash ./start.sh`启动程序后的输出
 
   ![image-20241203100403956](README.assets/image-20241203100403956.png)
 
