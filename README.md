@@ -1,35 +1,47 @@
 
 
-## 下载项目
+**注意**：请在**root**权限下进行操作！！！
 
-下载项目
+## 1. 启动linux
 
-```bash
-git 
+选择安装在opt目录
+
+```
+cd /opt/
 ```
 
-进入到项目目录，编辑`.env`文件，修改变量`CLASH_URL`的值。
+## 2. 安装clash
+
+### 2.1 下载clash
 
 ```bash
-cd clash-for-linux
+git clone https://github.com/anuouan/linux-clash.git
+```
+
+<img src="README.assets/image-20241203095625411.png" alt="image-20241203095625411"  />
+
+### 2.2 配置订阅地址
+
+进入到项目目录，编辑`.env`文件，添加订阅地址`CLASH_URL`的值。
+
+```bash
+cd linux-clash/
 ```
 
 ```bash
 vim .env
 ```
 
-> **注意：** `.env` 文件中的变量 `CLASH_SECRET` 为自定义 Clash Secret，值为空时，脚本将自动生成随机字符串。
+![image-20241203100106287](README.assets/image-20241203100106287.png)
 
-<br>
+- `CLASH_SECRET`: ui界面的密码，默认密码为：clash
 
-## 启动程序
+### 2.3 启动程序
 
-直接运行脚本文件`start.sh`
-
-- 进入项目目录
+- 进入clash目录
 
 ```bash
-cd clash-for-linux
+cd linux-clash/
 ```
 
 - 运行启动脚本
@@ -38,9 +50,7 @@ cd clash-for-linux
 sudo bash start.sh
 ```
 
-打印：
-
-![image-20241201151505296](./README.assets/image-20241201151505296.png)
+![image-20241203100403956](README.assets/image-20241203100403956.png)
 
 - 添加系统变量
 
@@ -48,7 +58,6 @@ sudo bash start.sh
 
 ```bash
 source /etc/profile.d/clash.sh
-
 ```
 
 - 开启系统代理
@@ -57,14 +66,67 @@ source /etc/profile.d/clash.sh
 proxy_on
 ```
 
+![image-20241203100750798](README.assets/image-20241203100750798.png)
+
 - 检查服务端口
 
 ```bash
-$ netstat -tln | grep -E '9090|789.'
-tcp        0      0 127.0.0.1:9090          0.0.0.0:*               LISTEN     
-tcp6       0      0 :::7890                 :::*                    LISTEN     
-tcp6       0      0 :::7891                 :::*                    LISTEN     
-tcp6       0      0 :::7892                 :::*                    LISTEN
+netstat -tln | grep -E '9090|789.'
+```
+
+![image-20241203100956778](README.assets/image-20241203100956778.png)
+
+- 检查环境变量
+
+```
+env | grep -E 'http_proxy|https_proxy'
+```
+
+![image-20241203101044759](README.assets/image-20241203101044759.png)
+
+以上步鄹如果正常，说明服务clash程序启动成功了。
+
+- 验证是否生效
+
+![image-20241203102250280](README.assets/image-20241203102250280.png)
+
+### 2.4 重启程序
+
+如果需要对Clash配置进行修改，请修改 `conf/config.yaml` 文件。然后运行 `restart.sh` 脚本进行重启。
+
+**注意：**
+		重启脚本 `restart.sh` 不会更新订阅信息。
+
+### 2.5 停止程序
+
+- 进入clash目录
+
+```bash
+cd linux-clash/
+```
+
+- 关闭服务
+
+```bash
+sudo bash shutdown.sh
+```
+
+![image-20241203102954776](README.assets/image-20241203102954776.png)
+
+- 关闭系统代理
+
+```bash
+proxy_off
+```
+
+然后检查程序端口、进程以及环境变量`http_proxy|https_proxy`，若都没则说明服务正常关闭。
+
+![image-20241203103024691](README.assets/image-20241203103024691.png)
+
+- 检查服务端口
+
+```bash
+netstat -tln | grep -E '9090|789.'
 ```
 
 - 检查环境变量
@@ -73,71 +135,24 @@ tcp6       0      0 :::7892                 :::*                    LISTEN
 env | grep -E 'http_proxy|https_proxy'
 ```
 
-![image-20241201152007814](./README.assets/image-20241201152007814.png)
+![image-20241203103117672](README.assets/image-20241203103117672.png)
 
-以上步鄹如果正常，说明服务clash程序启动成功，现在就可以体验高速下载github资源了。
+## 3. clash ui界面
 
-<br>
+- 通过地址访问ui界面
 
-## 重启程序
+  运行`sudo bash start.sh`启动程序后的输出
 
-如果需要对Clash配置进行修改，请修改 `conf/config.yaml` 文件。然后运行 `restart.sh` 脚本进行重启。
+  ![image-20241203100403956](README.assets/image-20241203100403956.png)
 
-> **注意：**
-> 重启脚本 `restart.sh` 不会更新订阅信息。
-
-<br>
-
-## 停止程序
-
-- 进入项目目录
-
-```bash
-$ cd clash-for-linux
-```
-
-- 关闭服务
-
-```bash
-$ sudo bash shutdown.sh
-
-服务关闭成功，请执行以下命令关闭系统代理：proxy_off
+- 通过浏览器输入地址访问
 
 ```
-
-```bash
-$ proxy_off
+http://<ip>:9090/ui
 ```
 
-然后检查程序端口、进程以及环境变量`http_proxy|https_proxy`，若都没则说明服务正常关闭。
-
-
-<br>
-
-## Clash Dashboard
-
-- 访问 Clash Dashboard
-
-通过浏览器访问 `start.sh` 执行成功后输出的地址，例如：http://192.168.0.1:9090/ui
+\<ip>：换成自己的公网ip地址
 
 - 登录管理界面
 
-在`API Base URL`一栏中输入：http://\<ip\>:9090 ，在`Secret(optional)`一栏中输入启动成功后输出的Secret。
-
-点击Add并选择刚刚输入的管理界面地址，之后便可在浏览器上进行一些配置。
-
-- 更多教程
-
-此 Clash Dashboard 使用的是[yacd](https://github.com/haishanh/yacd)项目，详细使用方法请移步到yacd上查询。
-
-<br>
-
-# 常见问题
-
-1. 部分Linux系统默认的 shell `/bin/sh` 被更改为 `dash`，运行脚本会出现报错（报错内容一般会有 `-en [ OK ]`）。建议使用 `bash xxx.sh` 运行脚本。
-
-2. 部分用户在UI界面找不到代理节点，基本上是因为厂商提供的clash配置文件是经过base64编码的，且配置文件格式不符合clash配置标准。
-
-   目前此项目已集成自动识别和转换clash配置文件的功能。如果依然无法使用，则需要通过自建或者第三方平台（不推荐，有泄露风险）对订阅地址转换。
-   
-3. 程序日志中出现`error: unsupported rule type RULE-SET`报错，解决方法查看官方[WIKI](https://github.com/Dreamacro/clash/wiki/FAQ#error-unsupported-rule-type-rule-set)
+![image-20241203101949376](README.assets/image-20241203101949376.png)
