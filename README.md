@@ -6,7 +6,7 @@
 
 选择安装在opt目录
 
-```
+```bash
 cd /opt/
 ```
 
@@ -78,7 +78,7 @@ netstat -tln | grep -E '9090|789.'
 
 - 检查环境变量
 
-```
+```bash
 env | grep -E 'http_proxy|https_proxy'
 ```
 
@@ -87,6 +87,10 @@ env | grep -E 'http_proxy|https_proxy'
 以上步鄹如果正常，说明服务clash程序启动成功了。
 
 - 验证是否生效
+
+```bash
+ping docker.com
+```
 
 ![image-20241203102250280](README.assets/image-20241203102250280.png)
 
@@ -131,7 +135,7 @@ netstat -tln | grep -E '9090|789.'
 
 - 检查环境变量
 
-```
+```bash
 env | grep -E 'http_proxy|https_proxy'
 ```
 
@@ -147,7 +151,7 @@ env | grep -E 'http_proxy|https_proxy'
 
 - 通过浏览器输入地址访问
 
-```
+```bash
 http://<ip>:9090/ui
 ```
 

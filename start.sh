@@ -12,10 +12,9 @@ export Server_Dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 source $Server_Dir/.env
 
 # 给二进制启动程序、脚本等添加可执行权限
-#chmod +x $Server_Dir/tools/subconverter/subconverter
 chmod +x $Server_Dir/bin/*
 chmod +x $Server_Dir/scripts/*
-chmod +x $Server_Dir/tools/subconverter/*
+chmod +x $Server_Dir/tools/subconverter/subconverter
 
 
 
@@ -85,6 +84,7 @@ if [[ -z "$CpuArch" ]]; then
 	exit 1
 fi
 
+export CpuArch=$CpuArch
 
 ## 临时取消环境变量
 unset http_proxy
@@ -133,11 +133,12 @@ if_success $Text3 $Text4 $ReturnStatus
 
 
 ## 判断订阅内容是否符合clash配置文件标准，尝试转换（当前不支持对 x86_64 以外的CPU架构服务器进行clash配置文件检测和转换，此功能将在后续添加）
-if [[ $CpuArch =~ "x86_64" || $CpuArch =~ "amd64"  ]]; then
+if [[ $CpuArch =~ "x86_64" || $CpuArch =~ "amd64" || $CpuArch =~ "arm64" ]]; then
 	echo -e '\n判断订阅内容是否符合clash配置文件标准:'
 	bash $Server_Dir/scripts/clash_profile_conversion.sh
 	sleep 3
 fi
+
 
 
 ## Clash 配置文件重新格式化及配置
@@ -187,7 +188,7 @@ echo ''
 # 添加环境变量(root权限)
 cat>/etc/profile.d/clash.sh<<EOF
 # 开启系统代理
-function proxy_on() {
+proxy_on() {
 	export http_proxy=http://127.0.0.1:7890
 	export https_proxy=http://127.0.0.1:7890
 	export no_proxy=127.0.0.1,localhost
@@ -198,7 +199,7 @@ function proxy_on() {
 }
 
 # 关闭系统代理
-function proxy_off(){
+proxy_off(){
 	unset http_proxy
 	unset https_proxy
 	unset no_proxy
@@ -208,7 +209,3 @@ function proxy_off(){
 	echo -e "\033[31m[×] 已关闭代理\033[0m"
 }
 EOF
-
-echo -e "请执行以下命令加载环境变量: source /etc/profile.d/clash.sh\n"
-echo -e "请执行以下命令开启系统代理: proxy_on\n"
-echo -e "若要临时关闭系统代理，请执行: proxy_off\n"
